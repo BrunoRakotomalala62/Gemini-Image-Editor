@@ -1,0 +1,45 @@
+modules = ["nodejs-20"]
+[agent]
+expertMode = true
+integrations = ["javascript_gemini_ai_integrations:2.0.0"]
+
+[nix]
+channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+PORT = "5000"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "PORT=5000 NODE_ENV=development node --enable-source-maps ./dist/index.mjs"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["node", "--enable-source-maps", "./dist/index.mjs"]
+build = ["bash", "-c", "npm install && node ./build.mjs"]
