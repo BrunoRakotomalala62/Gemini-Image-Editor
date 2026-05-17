@@ -43,4 +43,4 @@ externalPort = 80
 [deployment]
 deploymentTarget = "autoscale"
 run = ["node", "--enable-source-maps", "./dist/index.mjs"]
-build = ["bash", "-c", "npm install && node ./build.mjs"]
+build = ["bash", "-c", "pnpm install && node ./build.mjs"]
